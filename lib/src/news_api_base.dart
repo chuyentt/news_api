@@ -1,9 +1,11 @@
 part of news_api;
 
-/// `NewsApi` class allows fetching news jsonData from NewsAPI.org.
+/// The `NewsApi` class provides methods for fetching news jsonData from NewsAPI.org.
 ///
-/// An instance of this class provides the method [fetchTopHeadlines] which
-/// fetches top headlines from a specific country.
+/// An instance of this class provides the methods:
+/// - [fetchTopHeadlines] to fetch top headlines from a specific country
+/// - [fetchEverything] to fetch news based on specific search parameters
+/// - [fetchSources] to fetch the available sources from the News API.
 ///
 /// Example usage:
 ///

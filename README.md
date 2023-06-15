@@ -4,11 +4,20 @@ The News API Dart package is designed to interact with [NewsAPI.org](https://new
 
 ## Installation
 
-Add this to your `pubspec.yaml`:
+Depend on it
 
-```yaml
-dependencies:
-  news_api: ^1.0.0
+Run this command:
+
+With Dart:
+
+```
+dart pub add news_api
+```
+
+With Flutter:
+
+```
+flutter pub add news_api
 ```
 
 Run the following command to install the package:
@@ -39,7 +48,11 @@ Future<void> main() async {
 
 Where `<your-api-key>` is the API key you received from NewsAPI.org.
 
-The `fetchTopHeadlines()` function will return a List of news jsonData in the form of dynamic data (`List<dynamic>`).
+- The `fetchTopHeadlines()` function will return a Map containing news data in the form of dynamic data `(Map<String, dynamic>)` of the top headlines from NewsAPI.org.
+
+- The `fetchEverything()` function will return a Map containing news data `(Map<String, dynamic>)` that meets specified criteria from NewsAPI.org.
+
+- The `fetchSources()` function will return a Map containing source data `(Map<String, dynamic>)` from NewsAPI.org based on specified language and country parameters.
 
 ### Testing
 
