@@ -12,7 +12,7 @@ part of news_api;
 ///
 /// Future<void> main() async {
 ///   var newsApi = NewsApi('<your-api-key>');
-///   var articles = await newsApi.fetchTopHeadlines('us');
+///   var articles = await newsApi.fetchTopHeadlines(country: 'us');
 ///   print('articles: $articles');
 /// }
 /// ```
@@ -37,15 +37,45 @@ class NewsApi {
     }
   }
 
-  /// Fetches top headlines from a specific [country] from NewsAPI.org.
+  /// Fetches the top headlines from NewsAPI.org
   ///
-  /// Returns a `Future` that completes with a list of dynamic data
-  /// representing articles if the HTTP call succeeds.
-  ///
-  /// Throws an `Exception` if the HTTP call fails.
-  Future<List<dynamic>> fetchTopHeadlines(String country) async {
-    final response = await client!.get(Uri.parse(
-        'https://newsapi.org/v2/top-headlines?country=$country&apiKey=$apiKey'));
+  /// [country] - The 2-letter ISO 3166-1 code of the country you want to get
+  /// headlines for.
+  /// [category] - The category you want to get headlines from.
+  /// [sources] - A comma-seperated string of identifiers for the news sources
+  /// or blogs you want headlines from.
+  /// [q] - Keywords or a phrase to search for.
+  /// [pageSize] - The number of results to return per page. (20 results per
+  /// page is the default)
+  /// [page] - Use this to page through the results if the total results is
+  /// greater than the page size.
+  Future<List<dynamic>> fetchTopHeadlines({
+    String? country,
+    String? category,
+    String? sources,
+    String? q,
+    int? pageSize,
+    int? page,
+  }) async {
+    if (country == null &&
+        category == null &&
+        sources == null &&
+        q == null &&
+        pageSize == null &&
+        page == null) {
+      throw Exception(
+          'You must provide at least one parameter to fetchTopHeadlines');
+    }
+    String url = 'https://newsapi.org/v2/top-headlines?apiKey=$apiKey';
+
+    if (country != null) url += '&country=$country';
+    if (category != null) url += '&category=$category';
+    if (sources != null) url += '&sources=$sources';
+    if (q != null) url += '&q=$q';
+    if (pageSize != null) url += '&pageSize=$pageSize';
+    if (page != null) url += '&page=$page';
+
+    final response = await client!.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);

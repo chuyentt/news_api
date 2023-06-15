@@ -11,7 +11,7 @@ void main() {
   late String apiKey;
   late MockClient client;
   setUpAll(() {
-    apiKey = '8be848f8e2484773b821952ceca1f821';
+    apiKey = '<your-api-key>';
     client = MockClient();
   });
 
@@ -22,7 +22,8 @@ void main() {
       when(client.get(any)).thenAnswer((_) async => http.Response(
           '{"articles":[{"userId": 1, "id": 2, "title": "mock"}]}', 200));
 
-      expect(await newsApi.fetchTopHeadlines('us'), isA<List<dynamic>>());
+      expect(
+          await newsApi.fetchTopHeadlines(country: 'us'), isA<List<dynamic>>());
     });
 
     test('throws an exception if the http call completes with an error',
@@ -32,7 +33,7 @@ void main() {
       when(client.get(any))
           .thenAnswer((_) async => http.Response('Failed to load news', 404));
 
-      expect(newsApi.fetchTopHeadlines('us'), throwsException);
+      expect(newsApi.fetchTopHeadlines(country: 'us'), throwsException);
     });
   });
 }
