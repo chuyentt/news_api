@@ -24,14 +24,22 @@ import 'package:news_api/news_api.dart';
 
 Future<void> main() async {
   var newsApi = NewsApi('<your-api-key>');
-  var articles = await newsApi.fetchTopHeadlines(country: 'us');
-  print('articles: $articles');
+  
+  var topHeadlines = await newsApi.fetchTopHeadlines(country: 'us');
+  print('Top Headlines: $topHeadlines');
+
+  var everything = await newsApi.fetchEverything(
+      q: 'bitcoin', from: '2023-05-15', sortBy: 'publishedAt');
+  print('Everything: $everything');
+
+  var sources = await newsApi.fetchSources(language: 'en', country: 'us');
+  print('Sources: $sources');
 }
 ```
 
 Where `<your-api-key>` is the API key you received from NewsAPI.org.
 
-The `fetchTopHeadlines()` function will return a List of news articles in the form of dynamic data (`List<dynamic>`).
+The `fetchTopHeadlines()` function will return a List of news jsonData in the form of dynamic data (`List<dynamic>`).
 
 ### Testing
 
