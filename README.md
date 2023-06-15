@@ -2,30 +2,6 @@
 
 The News API Dart package is designed to interact with [NewsAPI.org](https://newsapi.org/). [NewsAPI.org](https://newsapi.org/) is a service API that allows developers to access news from sources around the globe. With NewsAPI, you can filter news by keyword, source, language, and many other criteria. You can also sort by published time.
 
-## Installation
-
-Depend on it
-
-Run this command:
-
-With Dart:
-
-```
-dart pub add news_api
-```
-
-With Flutter:
-
-```
-flutter pub add news_api
-```
-
-Run the following command to install the package:
-
-```bash
-flutter pub get
-```
-
 ## Usage
 
 ```dart
