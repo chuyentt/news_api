@@ -1,6 +1,6 @@
 # News API Dart Package
 
-The News API Dart package is designed to interact with [NewsAPI.org](https://newsapi.org/). [NewsAPI.org](https://newsapi.org/) is a service API that allows developers to access news from sources around the globe. With NewsAPI, you can filter news by keyword, source, language, and many other criteria. You can also sort by published time.
+The News API Dart package is a library for interacting with [NewsAPI.org](https://newsapi.org/). [NewsAPI.org](https://newsapi.org/) provides a service API that delivers news from various sources worldwide. With NewsAPI, you can filter news by keyword, source, language, and many other criteria. The news can also be sorted by publication time.
 
 ## Usage
 
@@ -11,24 +11,22 @@ Future<void> main() async {
   var newsApi = NewsApi('<your-api-key>');
   
   var topHeadlines = await newsApi.fetchTopHeadlines(country: 'us');
-  print('Top Headlines: $topHeadlines');
+  print('Top Headlines: ${topHeadlines.articles.map((a) => a.title).toList()}');
 
   var everything = await newsApi.fetchEverything(
       q: 'bitcoin', from: '2023-05-15', sortBy: 'publishedAt');
-  print('Everything: $everything');
+  print('Everything: ${everything.articles.map((a) => a.title).toList()}');
 
   var sources = await newsApi.fetchSources(language: 'en', country: 'us');
-  print('Sources: $sources');
+  print('Sources: ${sources.map((s) => s.name).toList()}');
 }
 ```
 
-Where `<your-api-key>` is the API key you received from NewsAPI.org.
+Replace `<your-api-key>` with the API key you received from NewsAPI.org.
 
-- The `fetchTopHeadlines()` function will return a Map containing news data in the form of dynamic data `(Map<String, dynamic>)` of the top headlines from NewsAPI.org.
-
-- The `fetchEverything()` function will return a Map containing news data `(Map<String, dynamic>)` that meets specified criteria from NewsAPI.org.
-
-- The `fetchSources()` function will return a Map containing source data `(Map<String, dynamic>)` from NewsAPI.org based on specified language and country parameters.
+- The `fetchTopHeadlines()` function will return an ArticleResponse object containing news articles of the top headlines from NewsAPI.org.
+- The `fetchEverything()` function will return an ArticleResponse object containing news articles that meet specified criteria from NewsAPI.org.
+- The `fetchSources()` function will return a List of Source objects from NewsAPI.org based on specified language and country parameters.
 
 ### Testing
 

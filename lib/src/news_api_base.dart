@@ -1,11 +1,15 @@
 part of news_api;
 
-/// The `NewsApi` class provides methods for fetching news jsonData from NewsAPI.org.
+/// The `NewsApi` class provides methods for fetching news from NewsAPI.org.
 ///
-/// An instance of this class provides the methods:
-/// - [fetchTopHeadlines] to fetch top headlines from a specific country
-/// - [fetchEverything] to fetch news based on specific search parameters
+/// An instance of this class provides the following methods:
+/// - [fetchTopHeadlines] to fetch top headlines from a specific country.
+/// - [fetchEverything] to fetch news based on specific search parameters.
 /// - [fetchSources] to fetch the available sources from the News API.
+///
+/// Each of these methods returns structured data using the models:
+/// - [ArticleResponse] for fetchTopHeadlines and fetchEverything methods
+/// - [Source] for fetchSources method.
 ///
 /// Example usage:
 ///
@@ -15,12 +19,12 @@ part of news_api;
 /// Future<void> main() async {
 ///   var newsApi = NewsApi('<your-api-key>');
 ///   var topHeadlines = await newsApi.fetchTopHeadlines(country: 'us');
-///   print('Top Headlines: $topHeadlines');
+///   print('Top Headlines: ${topHeadlines.articles.map((a) => a.title).toList()}');
 ///   var everything = await newsApi.fetchEverything(
 ///     q: 'bitcoin', from: '2023-05-15', sortBy: 'publishedAt');
-///   print('Everything: $everything');
+///   print('Everything: ${everything.articles.map((a) => a.title).toList()}');
 ///   var sources = await newsApi.fetchSources(language: 'en', country: 'us');
-///   print('Sources: $sources');
+///   print('Sources: ${sources.map((s) => s.name).toList()}');
 /// }
 /// ```
 class NewsApi {
@@ -56,7 +60,7 @@ class NewsApi {
   /// page is the default)
   /// [page] - Use this to page through the results if the total results is
   /// greater than the page size.
-  Future<Map<String, dynamic>> fetchTopHeadlines({
+  Future<ArticleResponse> fetchTopHeadlines({
     String? country,
     String? category,
     String? sources,
@@ -86,7 +90,7 @@ class NewsApi {
 
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
-      return jsonData;
+      return ArticleResponse.fromJson(jsonData);
     } else {
       throw Exception('Failed to load news');
     }
@@ -111,7 +115,7 @@ class NewsApi {
   /// [pageSize] - The number of results to return per page. 20 is the default,
   /// 100 is the maximum.
   /// [page] - Use this to page through the results.
-  Future<Map<String, dynamic>> fetchEverything({
+  Future<ArticleResponse> fetchEverything({
     String? q,
     String? sources,
     String? domains,
@@ -154,7 +158,7 @@ class NewsApi {
 
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
-      return jsonData;
+      return ArticleResponse.fromJson(jsonData);
     } else {
       throw Exception('Failed to load news');
     }
@@ -167,7 +171,7 @@ class NewsApi {
   /// [category] - Find sources that display news of this category.
   /// [language] - Find sources that display news in a specific language.
   /// [country] - Find sources that display news in a specific country.
-  Future<Map<String, dynamic>> fetchSources({
+  Future<List<Source>> fetchSources({
     String? category,
     String? language,
     String? country,
@@ -186,7 +190,11 @@ class NewsApi {
 
     if (response.statusCode == 200) {
       var jsonData = jsonDecode(response.body);
-      return jsonData;
+      List<Source> sources = [];
+      for (var item in jsonData['sources']) {
+        sources.add(Source.fromJson(item));
+      }
+      return sources;
     } else {
       throw Exception('Failed to load sources');
     }
